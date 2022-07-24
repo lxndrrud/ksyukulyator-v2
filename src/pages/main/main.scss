@@ -1,0 +1,43 @@
+.main-page {
+    &-anchor {
+        height: max-content;
+    }
+    
+    &-main {
+        height: max-content;
+    }
+    
+    &-content {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 2fr 1fr;
+    }
+
+    &-controlButtons {
+        display: inline-flex;
+        height: 100%;
+        flex-direction: column;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px dashed #ffb703;
+    }
+    
+    &-calculateControllers {
+        display: inline-flex;
+        height: 100%;
+        flex-direction: column;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px dashed #ffb703;
+    }
+    tbody .button {
+        justify-self: center;
+        align-self: center;
+        width:max-content;
+        padding: 3px;
+        padding-bottom: 3px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
+

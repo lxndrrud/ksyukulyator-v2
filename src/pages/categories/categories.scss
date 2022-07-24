@@ -1,0 +1,32 @@
+.categories-page {
+    &-root {
+        height: max-content;
+    }
+    
+    .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    
+    .overflow_container {
+        width: 75%;
+        height: 70vh;
+    }
+    
+    a.button {
+        height: fit-content;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    tbody .button {
+        justify-self: center;
+        align-self: center;
+        width: max-content;
+        padding: 3px;
+        padding-bottom: 3px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
