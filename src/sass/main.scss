@@ -14,7 +14,7 @@
     font-size: 18px;
     margin: 0px;
     font-family:  Helvetica, sans-serif;
-    height: 100vh;
+    height: max-content;
     padding: 10px;
 }
 
@@ -60,7 +60,7 @@ nav {
 }
 
 .overflow_container {
-    height: 300px;
+    height: 80vh;
     overflow: auto;
     border-radius: 10px;
     border: 1px dashed #ffb703;

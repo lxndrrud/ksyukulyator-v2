@@ -11,9 +11,13 @@ function MainPage() {
   let [products, setProducts] = useState([]);
   let [productsAmounts, setProductsAmounts] = useState([]);
   let [isAmountDisabled, setIsAmountDisabled] = useState(true);
+  let [categories, setCategories] = useState([])
+  let [selectedIdCategory, setSelectedIdCategory] = useState(-1)
+  let [productEntry, setProductEntry] = useState('')
 
   useEffect(() => {
     parseProducts();
+    parseCategories()
     parseProductsAmounts();
   }, []);
 
@@ -24,6 +28,15 @@ function MainPage() {
       setProducts(productsLocal.value);
     } catch (e) {
       setError(e);
+    }
+  }
+  async function parseCategories() {
+    try {
+      let categories = await loadCategories()
+      if (categories.error) throw categories.error
+      setCategories(categories.value)
+    } catch(e) {
+      setError(e)
     }
   }
   async function parseProductsAmounts() {
@@ -71,19 +84,20 @@ function MainPage() {
       setError(e);
     }
   }
-  async function filterProductsByCategory(idCategory) {
+  async function filterProductsLocal(idCategory, entry='') {
     try {
-      let products = await filterByCategory(parseInt(idCategory));
+      let products = await filterProducts(parseInt(idCategory), entry);
       if (products.error) throw products.error
-      await parseProducts(products.value);
+      setProducts(products.value)
     } catch(e) {
       setError(e)
     }
   }
+
   
   return (
     <div className="main-page column">
-      {error ? <span>{error}</span> : null}
+      {error && <span>{error}</span>}
       <div className="main-page-content">
         <div className="column">
           <h3>Продукты</h3>
@@ -106,25 +120,30 @@ function MainPage() {
                       <td>{product.category_title}</td>
                       <td className="row">
                         <button
-                          className="button"
+                          
+                          style={{border: "1px solid lightgreen"}}
                           onClick={async (e) => {
                             await calculate(product.product_id);
                           }}
                         >
                           <IconSVG 
+                            color="lightgreen"
                             data="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M19 19H5V5H19V19M6.2 7.7H11.2V9.2H6.2V7.7M13 15.8H18V17.3H13V15.8M13 13.2H18V14.7H13V13.2M8 18H9.5V16H11.5V14.5H9.5V12.5H8V14.5H6V16H8V18M14.1 10.9L15.5 9.5L16.9 10.9L18 9.9L16.6 8.5L18 7.1L16.9 6L15.5 7.4L14.1 6L13 7.1L14.4 8.5L13 9.9L14.1 10.9Z" />
                         </button>
                         <button
-                          className="button"
+                          
+                          style={{border: "1px solid #e9c46a"}}
                           onClick={() => {
                             navigate(`/editProduct/${product.product_id}`)
                           }}
                         >
-                          <IconSVG 
+                          <IconSVG
+                            color="#e9c46a" 
                             data="M18.62,1.5C18.11,1.5 17.6,1.69 17.21,2.09L10.75,8.55L14.95,12.74L21.41,6.29C22.2,5.5 22.2,4.24 21.41,3.46L20.04,2.09C19.65,1.69 19.14,1.5 18.62,1.5M9.8,9.5L3.23,16.07L3.93,16.77C3.4,17.24 2.89,17.78 2.38,18.29C1.6,19.08 1.6,20.34 2.38,21.12C3.16,21.9 4.42,21.9 5.21,21.12C5.72,20.63 6.25,20.08 6.73,19.58L7.43,20.27L14,13.7" />
                         </button>
                         <button
-                          className="button"
+                          
+                          style={{border: "1px solid #e76f51", color: "#e76f51"}}
                           onClick={async (e) => {
                             await delProduct(product.product_id);
                           }}
@@ -151,12 +170,31 @@ function MainPage() {
               Обновить список
             </button>
             <NavLink to="/addProduct" className="button">Добавить продукт</NavLink>
+
+            <h3 style={{ marginTop: "20px" }}>Фильтр</h3>
             <select
               id="productCategory"
-              onChange={async () => {
-                await filterProductsByCategory();
+              onChange={(e) => {
+                setSelectedIdCategory(parseInt(e.target.value))
+                //await filterProductsByCategory(e.target.value);
               }}
-            ></select>
+            >
+              <option value={-1} >Все</option>
+              <option value={0} >Без категории</option>
+              {
+                categories && categories.map(category => (
+                  <option key={category.category_id} value={category.category_id}>{category.category_title}</option>
+                ))
+              }
+            </select>
+            <input 
+              className="input_text" 
+              placeholder="Название продукта для поиска" 
+              type="text" 
+              onChange={(e) => { setProductEntry(e.target.value) }} />
+            <button className="button" onClick={() => filterProductsLocal(selectedIdCategory, productEntry) } >
+              Поиск
+            </button>
           </div>
         </div>
         <div className="column">

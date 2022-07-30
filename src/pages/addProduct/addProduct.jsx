@@ -36,7 +36,7 @@ function AddProductPage() {
             }
             let result = await addProduct(title, parseFloat(cost), parseInt(categoryId))
             if (result.error) throw result.error
-            if (result.value) navigate('/calculator')
+            if (result.value) navigate('/')
         } catch (e) {
             setError(e)
         }
@@ -76,7 +76,7 @@ function AddProductPage() {
                 </select>
                 <button onClick={async() => { await saveProduct() }} className="button">Сохранить</button>
                 
-                <NavLink to="/calculator" className="button" >Отменить</NavLink>
+                <NavLink to="/" className="button" >Отменить</NavLink>
             </div>
             
         </div>

@@ -16,12 +16,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <div className="main">
                 <h1 className='ksyu'>Ксюкулятор</h1>
                 <nav>
-                    <NavLink to="/calculator" className="link" >Калькулятор</NavLink>
+                    <NavLink to="/" className="link" >Калькулятор</NavLink>
                     <NavLink to="/categories" className="link" >Категории</NavLink>
                 </nav>
                 <div className="anchor">
                     <Routes>
-                        <Route path="/calculator" element={<MainPage  />} />    
+                        <Route path="/" element={<MainPage  />} />    
                         <Route path="/categories" element={<CategoriesPage/>} />
                         <Route path="/addProduct" element={<AddProductPage />} />
                         <Route path="/editProduct/:idProduct" element={<EditProductPage />} />

@@ -41,7 +41,7 @@ function EditProductPage() {
     try {
       let result = await editProduct(parseInt(idProduct), productTitle, parseFloat(productCost), parseInt(idCategory))
       if (result.error) throw result.error
-      else navigate('/calculator')
+      else navigate('/')
     } catch (e) {
       setError(e)
     }
@@ -78,7 +78,7 @@ function EditProductPage() {
         </div>
         
         <button onClick={edit} className="button">Сохранить</button>
-        <Link to="/calculator" className='button' >Отменить</Link>
+        <Link to="/" className='button' >Отменить</Link>
       </div>
     </div>
   )

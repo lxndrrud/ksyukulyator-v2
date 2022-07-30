@@ -1,16 +1,9 @@
 .main-page {
-    &-anchor {
-        height: max-content;
-    }
-    
-    &-main {
-        height: max-content;
-    }
-    
     &-content {
         display: grid;
         gap: 20px;
         grid-template-columns: 2fr 1fr;
+        height: max-content;
     }
 
     &-controlButtons {
@@ -30,7 +23,10 @@
         border-radius: 10px;
         border: 1px dashed #ffb703;
     }
-    tbody .button {
+    .overflow_container {
+        height: 400px;
+    }
+    tbody button {
         justify-self: center;
         align-self: center;
         width:max-content;
@@ -38,6 +34,8 @@
         padding-bottom: 3px;
         margin-top: 0px;
         margin-bottom: 0px;
+        border-radius: 10px;
+        background-color: #264653;
     }
 }
 

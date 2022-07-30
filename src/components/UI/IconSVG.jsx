@@ -1,10 +1,10 @@
 import React from 'react'
 
-function IconSVG({ data }) {
+function IconSVG({ data, color="currentColor" }) {
   return (
     <span>
-        <svg style={{width: "20px", height:"20px"}} viewBox="0 0 24 24">
-            <path fill="currentColor" d={data} />
+        <svg style={{padding: "0px", width: "20px", height:"20px", justifyContent: "center", alignItems: "center"}} viewBox="0 0 24 24">
+            <path fill={color} d={data} />
         </svg>
     </span>
   )

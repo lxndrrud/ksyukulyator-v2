@@ -60,23 +60,35 @@ func (s *ProductModel) GetById(idProduct int64) (dto.ProductFull, error) {
 	return product, nil
 }
 
-func (s *ProductModel) GetByCategoryId(idCategory int64) ([]dto.ProductFull, error) {
+func (s *ProductModel) Filter(idCategory int64, entry string) ([]dto.ProductFull, error) {
 	products := make([]dto.ProductFull, 0)
 
 	err := s.db.Select(&products, `
 		SELECT 
 			p.*, 
 			CASE
-				WHEN c.category_title IS NULL THEN "Без категории"
-				WHEN c.category_title IS NOT NULL THEN c.category_title
+				WHEN c.category_id IS NULL THEN "Без категории"
+				ELSE c.category_title
 			END as category_title
 		FROM products p
 		LEFT JOIN categories AS c ON c.category_id = p.product_id_category
-		WHERE ($1 AND c.category_id = $3) OR ($2 AND c.category_id IS NULL)
+		WHERE 
+				CASE 
+					WHEN $1 THEN TRUE
+					WHEN $2 THEN c.category_id = $3
+					ELSE c.category_id IS NULL
+				END
+			AND
+				CASE 
+					WHEN $4 THEN p.product_title LIKE '%'|| $5 ||'%'
+					ELSE TRUE
+				END 
 	`,
+		idCategory == -1,
 		idCategory != 0,
-		idCategory == 0,
-		idCategory)
+		idCategory,
+		len(entry) != 0,
+		entry)
 	if err != nil {
 		return []dto.ProductFull{}, err
 	}

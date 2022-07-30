@@ -2,6 +2,7 @@ package window_controllers
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/jchv/go-webview-selector"
 	"github.com/jmoiron/sqlx"
@@ -33,6 +34,7 @@ func (c *WindowController) LoadBindings() {
 	c.Window.Bind("addProduct", c.AddProduct)
 	c.Window.Bind("editProduct", c.EditProduct)
 	c.Window.Bind("deleteProduct", c.DeleteProduct)
+	c.Window.Bind("filterProducts", c.FilterProducts)
 
 	// Categories
 	c.Window.Bind("loadCategories", c.LoadCategories)
@@ -45,7 +47,6 @@ func (c *WindowController) LoadBindings() {
 	c.Window.Bind("addAmountToCalc", c.AddProductToCalculation)
 	c.Window.Bind("deleteAmountFromCalc", c.DeleteProductFromCalculation)
 	c.Window.Bind("getAmounts", c.GetProductsAmounts)
-	c.Window.Bind("filterByCategory", c.productStorage.GetByCategoryId)
 }
 
 func (c *WindowController) SetupWindow() {
@@ -252,8 +253,9 @@ func (c *WindowController) GetProductsAmounts() dto.Result {
 	}
 }
 
-func (c *WindowController) FilterByCategory(idCategory int64) dto.Result {
-	products, err := c.productStorage.GetByCategoryId(idCategory)
+func (c *WindowController) FilterProducts(idCategory int64, entry string) dto.Result {
+	products, err := c.productStorage.Filter(idCategory, entry)
+	fmt.Println(products, err)
 	if err != nil {
 		return dto.Result{
 			Value: []dto.ProductFull{},
@@ -264,4 +266,5 @@ func (c *WindowController) FilterByCategory(idCategory int64) dto.Result {
 		Value: products,
 		Error: nil,
 	}
+
 }
