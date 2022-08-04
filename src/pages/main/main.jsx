@@ -93,6 +93,16 @@ function MainPage() {
       setError(e)
     }
   }
+  async function clearAmountsLocal() {
+    try {
+      let result = await clearAmounts()
+      if (result.error) throw result.error
+      setProductsAmounts(result.value.products)
+      setSum(result.value.sum)
+    } catch (e) {
+      setError(e)
+    }
+  }
 
   
   return (
@@ -170,8 +180,9 @@ function MainPage() {
               Обновить список
             </button>
             <NavLink to="/addProduct" className="button">Добавить продукт</NavLink>
-
-            <h3 style={{ marginTop: "20px" }}>Фильтр</h3>
+          </div>
+          <h3 style={{ marginTop: "20px" }}>Фильтр</h3>
+          <div className="main-page-controlButtons">
             <select
               id="productCategory"
               onChange={(e) => {
@@ -279,6 +290,17 @@ function MainPage() {
               className="button"
             >
               Рассчитать количество продукта
+            </button>
+            <button 
+              onClick={async (e) => {
+                await clearAmountsLocal()
+              }}
+              className="button"
+              style={{
+                marginTop: "40px"
+              }}
+            >
+              Очистить таблицу
             </button>
           </div>
         </div>

@@ -2,7 +2,6 @@ package window_controllers
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/jchv/go-webview-selector"
 	"github.com/jmoiron/sqlx"
@@ -47,6 +46,7 @@ func (c *WindowController) LoadBindings() {
 	c.Window.Bind("addAmountToCalc", c.AddProductToCalculation)
 	c.Window.Bind("deleteAmountFromCalc", c.DeleteProductFromCalculation)
 	c.Window.Bind("getAmounts", c.GetProductsAmounts)
+	c.Window.Bind("clearAmounts", c.ClearProductsAmounts)
 }
 
 func (c *WindowController) SetupWindow() {
@@ -255,7 +255,6 @@ func (c *WindowController) GetProductsAmounts() dto.Result {
 
 func (c *WindowController) FilterProducts(idCategory int64, entry string) dto.Result {
 	products, err := c.productStorage.Filter(idCategory, entry)
-	fmt.Println(products, err)
 	if err != nil {
 		return dto.Result{
 			Value: []dto.ProductFull{},
@@ -267,4 +266,11 @@ func (c *WindowController) FilterProducts(idCategory int64, entry string) dto.Re
 		Error: nil,
 	}
 
+}
+
+func (c *WindowController) ClearProductsAmounts() dto.Result {
+	return dto.Result{
+		Value: c.calcController.ClearProducts(),
+		Error: nil,
+	}
 }
